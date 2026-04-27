@@ -21,9 +21,7 @@ class TestOrderFeedPage:
                          attachment_type=allure.attachment_type.TEXT)
         
         with allure.step('Создаём заказ через API и получаем номер заказа'):
-            # Получаем токен из cookies или localStorage
-            access_token = driver.execute_script("return localStorage.getItem('accessToken');")
-            
+            access_token = main_page.get_access_token()            
             order_number = order_feed_page.get_order_number_via_api_with_auth(access_token)
             allure.attach(f"Номер заказа: {order_number}", name="order_number",
                         attachment_type=allure.attachment_type.TEXT)
@@ -58,7 +56,7 @@ class TestOrderFeedPage:
                          attachment_type=allure.attachment_type.TEXT)
         
         with allure.step('Создаём заказ через API и получаем номер заказа'):
-            access_token = driver.execute_script("return localStorage.getItem('accessToken');")
+            access_token = main_page.get_access_token()
             order_number = order_feed_page.get_order_number_via_api_with_auth(access_token)
             allure.attach(f"Номер заказа: {order_number}", name="order_number",
                         attachment_type=allure.attachment_type.TEXT)
@@ -90,7 +88,7 @@ class TestOrderFeedPage:
         order_feed_page = OrderFeedPage(driver)
         
         with allure.step('Создаём заказ через API и получаем номер заказа'):
-            access_token = driver.execute_script("return localStorage.getItem('accessToken');")
+            access_token = main_page.get_access_token()
             order_number = order_feed_page.get_order_number_via_api_with_auth(access_token)
             allure.attach(f"Номер созданного заказа: {order_number}", name="order_number",
                          attachment_type=allure.attachment_type.TEXT)

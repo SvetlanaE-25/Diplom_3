@@ -66,8 +66,7 @@ class MainPage(BasePage):
         # Находим и удаляем оверлей
         element_to_remove = self.driver.find_element(*MainPageLocators.MODAL_OVERLAY)
         self.driver.execute_script("arguments[0].remove();", element_to_remove)
-        time.sleep(0.5)  # Используем time.sleep вместо self.wait
-        
+                
         # Ждём появления кнопки закрытия
         close_button = self.wait_for_visible(MainPageLocators.CLOSE_MODAL_ORDER, timeout=10)
         
@@ -75,8 +74,8 @@ class MainPage(BasePage):
         actions = ActionChains(self.driver)
         actions.move_to_element(close_button).click().perform()
         
-        # # Ждём исчезновения модального окна
-        # self.wait_for_invisible(MainPageLocators.ORDER_NUMBER_MODAL, timeout=10)
-        # time.sleep(0.5)
+    @allure.step("Получение токена авторизации из localStorage")
+    def get_access_token(self):
+        return self.driver.execute_script("return localStorage.getItem('accessToken');")
 
     

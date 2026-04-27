@@ -2,6 +2,7 @@
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.common.exceptions import TimeoutException
+from selenium.webdriver.common.action_chains import ActionChains
 from locators.locators import MainPageLocators
 
 class BasePage:
@@ -56,43 +57,18 @@ class BasePage:
     
 
     
-    #Перетаскивание элемента
+    #Перетаскивание элемента   
     def drag_and_drop(self, source_locator, target_locator):
         """
-        Перетаскивает элемент из source_locator в target_locator с использованием JavaScript.
+        Перетаскивает элемент из source_locator в target_locator с использованием ActionChains.
         :param source_locator: Локатор элемента, который нужно перетащить.
         :param target_locator: Локатор элемента, куда нужно перетащить.
         """
-        self.find_element_with_wait(source_locator)
-        self.find_element_with_wait(target_locator)
-
-        element_from = self.driver.find_element(*source_locator)
-        element_to = self.driver.find_element(*target_locator)
-
-        self.driver.execute_script("""
-            var source = arguments[0];
-            var target = arguments[1];
-
-            var evt = document.createEvent("DragEvent");
-            evt.initMouseEvent("dragstart", true, true, window, 0, 0, 0, 0, 0, false, false, false, false, 0, null);
-            source.dispatchEvent(evt);
-
-            evt = document.createEvent("DragEvent");
-            evt.initMouseEvent("dragenter", true, true, window, 0, 0, 0, 0, 0, false, false, false, false, 0, null);
-            target.dispatchEvent(evt);
-
-            evt = document.createEvent("DragEvent");
-            evt.initMouseEvent("dragover", true, true, window, 0, 0, 0, 0, 0, false, false, false, false, 0, null);
-            target.dispatchEvent(evt);
-
-            evt = document.createEvent("DragEvent");
-            evt.initMouseEvent("drop", true, true, window, 0, 0, 0, 0, 0, false, false, false, false, 0, null);
-            target.dispatchEvent(evt);
-
-            evt = document.createEvent("DragEvent");
-            evt.initMouseEvent("dragend", true, true, window, 0, 0, 0, 0, 0, false, false, false, false, 0, null);
-            source.dispatchEvent(evt);
-        """, element_from, element_to)
+        source_element = self.wait_for_visible(source_locator)
+        target_element = self.wait_for_visible(target_locator)
+        
+        actions = ActionChains(self.driver)
+        actions.drag_and_drop(source_element, target_element).perform()
 
     #Ожидание
     def wait(self, seconds):

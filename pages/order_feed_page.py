@@ -4,6 +4,7 @@ import requests
 from pages.base_page import BasePage
 from locators.locators import *
 from url import API_INGREDIENTS, API_ORDERS
+import time
 
 
 class OrderFeedPage(BasePage):
@@ -50,8 +51,6 @@ class OrderFeedPage(BasePage):
 
     @allure.step("Ожидание обновления счётчика 'Выполнено за всё время'")
     def wait_for_total_counter_update(self, initial_value, timeout=30):
-        """Ожидает, пока счётчик 'Выполнено за всё время' станет больше начального значения"""
-        import time
         start_time = time.time()
         while time.time() - start_time < timeout:
             current_value = self.get_total_orders_count()
@@ -62,8 +61,6 @@ class OrderFeedPage(BasePage):
 
     @allure.step("Ожидание обновления счётчика 'Выполнено за сегодня'")
     def wait_for_today_counter_update(self, initial_value, timeout=30):
-        """Ожидает, пока счётчик 'Выполнено за сегодня' станет больше начального значения"""
-        import time
         start_time = time.time()
         while time.time() - start_time < timeout:
             current_value = self.get_today_orders_count()
@@ -74,8 +71,6 @@ class OrderFeedPage(BasePage):
     
     @allure.step("Ожидание появления номера заказа в разделе 'В работе'")
     def wait_for_order_in_work(self, order_number, timeout=30):
-        """Ожидает, пока номер заказа появится в разделе 'В работе'"""
-        import time
         start_time = time.time()
         while time.time() - start_time < timeout:
             orders = self.get_all_orders_in_work()
